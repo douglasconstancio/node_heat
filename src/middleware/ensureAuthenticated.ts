@@ -2,19 +2,17 @@ import { Request, Response, NextFunction } from "express";
 import { verify } from "jsonwebtoken";
 
 interface IPayload {
-  sub: string;
+  sub: string,
 };
 
 export function ensureAuthenticated(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   const authToken = req.headers.authorization;
 
-  if (!authToken) {
-    return res.status(401).json({ errorCode: "invalid.token"});
-  }
+  if (!authToken) res.status(401).json({ errorCode: "invalid.token"});
 
   const [, token ] = authToken.split((" "));
 
@@ -24,7 +22,7 @@ export function ensureAuthenticated(
 
     return next();
   } catch (err) {
-    return res.status(401).json({ errorCode: err.message })
-  }
+    return res.status(401).json({ errorCode: err.message });
+  };
 
-}
+};
